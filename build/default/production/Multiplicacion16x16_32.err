@@ -1,0 +1,152 @@
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 7 : Labels must be defined in a code or data section when making an object file
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 8 : Labels must be defined in a code or data section when making an object file
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 9 : Labels must be defined in a code or data section when making an object file
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 10 : Labels must be defined in a code or data section when making an object file
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 12 : Labels must be defined in a code or data section when making an object file
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 13 : Labels must be defined in a code or data section when making an object file
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 14 : Labels must be defined in a code or data section when making an object file
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 15 : Labels must be defined in a code or data section when making an object file
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 17 : Labels must be defined in a code or data section when making an object file
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 20 : Labels must be defined in a code or data section when making an object file
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 21 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 21 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 22 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 22 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 23 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 23 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 24 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 24 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 25 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 25 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 26 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 26 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 27 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 27 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 28 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 28 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 29 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 29 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 30 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 30 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 31 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 31 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 32 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 32 : Symbol not previously defined (Z)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 32 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 33 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 33 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 34 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 34 : Executable code and data must be defined in an appropriate section
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 35 : Labels must be defined in a code or data section when making an object file
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 36 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 36 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 37 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 37 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 38 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 38 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 39 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 39 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 40 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 40 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 41 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 41 : Symbol not previously defined (Z)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 41 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 42 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 42 : Executable code and data must be defined in an appropriate section
+Message[305] C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 43 : Using default destination of 1 (file).
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 43 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 43 : Executable code and data must be defined in an appropriate section
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 44 : Labels must be defined in a code or data section when making an object file
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 45 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 45 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 46 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 46 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 47 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 47 : Symbol not previously defined (C)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 47 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 48 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 48 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 49 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 49 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 50 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 50 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 51 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 51 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 52 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 52 : Symbol not previously defined (C)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 52 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 53 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 53 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 54 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 54 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 55 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 55 : Symbol not previously defined (C)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 55 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 56 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 56 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 57 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 57 : Symbol not previously defined (C)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 57 : Executable code and data must be defined in an appropriate section
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 58 : Labels must be defined in a code or data section when making an object file
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 59 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 59 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 60 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 60 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 61 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 61 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 62 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 62 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 63 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 63 : Symbol not previously defined (C)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 63 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 64 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 64 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 65 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 65 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 66 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 66 : Executable code and data must be defined in an appropriate section
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 67 : Labels must be defined in a code or data section when making an object file
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 68 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 68 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 69 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 69 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 70 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 70 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 71 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 71 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 72 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 72 : Symbol not previously defined (C)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 72 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 73 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 73 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 74 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 74 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 75 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 75 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 76 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 76 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 77 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 77 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 78 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 78 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 79 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 79 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 80 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 80 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 81 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 81 : Symbol not previously defined (Z)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 81 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 82 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 82 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 83 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 83 : Symbol not previously defined (Z)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 83 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 84 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 84 : Executable code and data must be defined in an appropriate section
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 85 : Symbol not previously defined (STATUS)
+Error[113]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 85 : Symbol not previously defined (Z)
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 85 : Executable code and data must be defined in an appropriate section
+Error[151]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 86 : Operand contains unresolvable labels or is too complex
+Error[152]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 86 : Executable code and data must be defined in an appropriate section
+Error[150]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 87 : Labels must be defined in a code or data section when making an object file
+Error[129]   C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\MULTIPLICACION16X16_32.ASM 88 : Expected (END)

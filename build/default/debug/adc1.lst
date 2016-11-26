@@ -1,0 +1,1273 @@
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001     #include <p16F876A.inc>
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Sep 13 2016
+                      00005 ;  MPASM PIC16F876A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2016 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00525         LIST
+                      00002     errorlevel -302         ; no bank warnings
+                      00003 
+                      00004 ; CONFIG
+Message[303]: Program word too large.  Truncated to core size. (FF79)
+2007   3F79           00005  __config 0xFF79
+                      00006 ;    __CONFIG _FOSC_XT & _WDTE_OFF & _PWRTE_OFF & _BOREN_ON & _LVP_OFF & _CPD_OFF & _WRT_OFF & _CP_OFF
+                      00007  
+                      00008 #define res .48828      ; 4.8828 mV
+                      00009 
+  00000020            00010 Lcd_var     EQU 0x20
+  00000022            00011 Byte_L      EQU 0x22
+  00000023            00012 Byte_H      EQU 0x23
+  00000024            00013 BCD_2       EQU 0x24
+  00000025            00014 BCD_1       EQU 0x25
+  00000026            00015 BCD_0       EQU 0x26
+  00000027            00016 Contador    EQU 0x27
+  00000028            00017 Temporal    EQU 0x28
+  00000029            00018 DELAY       EQU 0x29
+  00000030            00019 F1L         EQU 0x30        ; LSB del primer factor de la multiplicación
+  00000031            00020 F1H         EQU 0x31        ; MSB del primer factor de la multiplicación
+  00000032            00021 F2L         EQU 0x32        ; LSB del segundo factor de la multiplicación
+  00000033            00022 F2H         EQU 0x33        ; MSB del segundo factor de la multiplicación
+                      00023 ;Registros para guardar resultado de multiplicacion de 32 bit's
+  00000034            00024 p1          EQU 0x34        ; LSB del producto F1*F2
+  00000035            00025 p2          EQU 0x35        ; Segundo byte del producto F1*F2
+  00000036            00026 p3          EQU 0x36        ; Tercer byte del producto F1*F2
+  00000037            00027 p4          EQU 0x37        ; MSB del producto F1*F2
+  00000038            00028 Flag        EQU 0x38        ;Registro temporal de multiplicacion
+  00000039            00029 t1          EQU 0x39
+  000000FF            00030 PERIODO     EQU .255        ; Periodo del pulso PWM
+  00000034            00031 bin         EQU 0x34        ; 4 bytes a convertir a BCD
+  00000044            00032 bcd         EQU 0x44        ; 5 bytes resultado de la conversión 32b2BCD
+  00000049            00033 ii          EQU 0x49
+  00000050            00034 cnt         EQU 0x50
+                      00035  
+                      00036 RES_VECT  CODE    0x0000            ; processor reset vector
+0000   2???           00037     GOTO    START                   ; go to beginning of program
+                      00038 
+                      00039     ORG 0x04
+0004   2???           00040     goto INTER
+                      00041     
+                      00042     ORG 0x05
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00043     
+                      00044         #include "lcd_cxx.inc"
+                      00001 
+                      00002 ;                               LCD_CXX.INC
+                      00003 ;
+                      00004 ;                                               Autor: Mikel Etxebarria
+                      00005 ;                       (c) Ingenier�a de Microsistemas Programados S.L.
+                      00006 ;                                               www.microcontroladores.com
+                      00007 ;                                                               Bilbao 2006
+                      00008 ;                                               
+                      00009 ;El conjunto de rutinas que se presentan a continuaci�n permiten realizar las tareas b�sicas 
+                      00010 ;de control del m�dulo de visualizaci�n LCD. Este fichero se debe incluir en los futuros
+                      00011 ;programas fuente mediante la directiva INCLUDE
+                      00012 ;
+                      00013 ;Las rutinas est�n adaptadas a las velocidades m�s lentas de los nuevos m�dulo LCD, en las cuales 
+                      00014 ;el tiempo de activaci�n (Tc) de la se�al ENABLE es de unos 40 uS. La velocidad de trabajo del 
+                      00015 ;PIC se supone de 4MHz y se realiza un interfase de 8 bits
+                      00016 ;
+                      00017 ;Se supone que RA1, RA2 y RA3 est�n conectadas con las se�ales RS, R/W y E respectivamente.
+                      00018 ;RB0-RB7 est�n conectadas a las l�neas de datos
+                      00019 
+                      00020 #define ENABLE       bsf PORTA,3        ;Activa se�al E
+                      00021 #define DISABLE      bcf PORTA,3        ;Desactiva se�al E
+                      00022 #define LEER         bsf PORTA,2        ;Pone LCD en Modo RD
+                      00023 #define ESCRIBIR     bcf PORTA,2        ;Pone LCD en Modo WR
+                      00024 #define OFF_COMANDO  bcf PORTA,1        ;Desactiva RS (modo comando)
+                      00025 #define ON_COMANDO   bsf PORTA,1        ;Activa RS (modo dato
+                      00026 
+                      00027     CBLOCK      Lcd_var         ;Inicio de las variables. Ser� la primera                             
+                                            
+  00000020            00028     Lcd_Temp_1                  ;direcc�n libre disponible
+  00000021            00029     Lcd_Temp_2
+                      00030     ENDC                                                                                        
+                      00031 
+                      00032 ;*************************************************************************
+                      00033 ;UP_LCD: Configuraci�n PIC para el LCD.
+                      00034 ;
+0005   1683           00035 UP_LCD          bsf     STATUS,RP0      ;Banco 1
+0006   0186           00036                 clrf    PORTB           ;RB <0-7> salidas digitales
+0007   30F1           00037                 movlw   b'11110001'
+0008   0085           00038                                 movwf   PORTA           ;Puerta A salidas
+0009   1283           00039                 bcf     STATUS,RP0      ;Banco 0
+000A   1085           00040                 OFF_COMANDO             ;RS=0
+000B   1185           00041                 DISABLE                 ;E=0
+000C   0008           00042                 return
+                      00043 ;
+                      00044 ;**************************************************************************
+                      00045 ;LCD_BUSY: Lectura del Flag Busy y la direcci�n.
+                      00046 ;
+000D   1505           00047 LCD_BUSY        LEER                    ;Pone el LCD en Modo RD
+000E   1683           00048                 bsf     STATUS,RP0           
+000F   30FF           00049                 movlw   H'FF'
+0010   0086           00050                 movwf   PORTB           ;Puerta B como entrada
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0011   1283           00051                 bcf     STATUS,RP0      ;Selecciona el banco 0
+0012   1585           00052                 ENABLE                  ;Activa el LCD
+0013   0000           00053                 nop
+0014   1B86           00054 LCD_BUSY_1              btfsc   PORTB,7         ;Chequea bit de Busy
+0015   2???           00055                 goto    LCD_BUSY_1              ;
+0016   1185           00056                 DISABLE                 ;Desactiva LCD
+0017   1683           00057                 bsf     STATUS,RP0                               
+0018   0186           00058                 clrf    PORTB           ;Puerta B salida
+0019   1283           00059                 bcf     STATUS,RP0                              
+001A   1105           00060                 ESCRIBIR                ;Pone LCD en modo WR
+001B   0008           00061                 return
+                      00062 
+                      00063 ;**************************************************************************
+                      00064 ;LCD_E: Pulso de Enable. En los nuevos LCD's esta se�al debe estar a "0" unos 40uS 
+                      00065 ;antes de volver a ponerse a "1".
+                      00066 ;
+001C   1585           00067 LCD_E           ENABLE                  ;Activa E
+001D   0000           00068                                 nop
+001E   1185           00069                 DISABLE                 ;Desactiva E
+001F   300E           00070                                 movlw   .14
+0020   00A0           00071                                 movwf   Lcd_Temp_1
+0021   0BA0           00072 LCD_E_1                 decfsz  Lcd_Temp_1,F    ;Pierde unos 40 uS para la constante de tiempo Tc
+0022   2???           00073                                 goto    LCD_E_1                 ;de los nuevos m�dulos LCD de winteck
+0023   0008           00074                                 return
+                      00075 ;
+                      00076 ;**************************************************************************
+                      00077 ;LCD_DATO: Escritura de datos en DDRAM o CGRAM. Env�a el dato presente en el W
+                      00078 ;
+0024   1085           00079 LCD_DATO        OFF_COMANDO             ;Desactiva RS (modo comando)
+0025   0086           00080                 movwf   PORTB           ;Valor ASCII a sacar por portb
+0026   2???           00081                 call    LCD_BUSY        ;Espera a que se libere el LCD
+0027   1485           00082                 ON_COMANDO              ;Activa RS (modo dato).
+0028   2???           00083                 goto    LCD_E           ;Genera pulso de E
+                      00084 
+                      00085 ;**************************************************************************
+                      00086 ;LCD_REG: Escritura de comandos en el LCD. Env�a el comando presente en el W
+                      00087 
+0029   1085           00088 LCD_REG         OFF_COMANDO             ;Desactiva RS (modo comando)
+002A   0086           00089                 movwf   PORTB           ;C�digo de comando.
+002B   2???           00090                 call    LCD_BUSY        ;LCD libre?.
+002C   2???           00091                 goto    LCD_E           ;SI.Genera pulso de E.
+                      00092 
+                      00093 ;***************************************************************************
+                      00094 ;LCD_INI: inicializaci�n del LCD enviando el comando "Function Set" 3 veces consecutivas
+                      00095 ;con un intervalo de unos 5 mS. El LCD queda borrado y el cursor en la primera posici�n
+                      00096 
+002D   3038           00097 LCD_INI                 movlw   b'00111000'
+002E   2???           00098                                 call    LCD_REG                 ;C�digo de instrucci�n
+002F   2???           00099                                 call    LCD_DELAY               ;Temporiza
+0030   3038           00100                                 movlw   b'00111000'
+0031   2???           00101                                 call    LCD_REG                 ;C�digo de instrucci�n
+0032   2???           00102                                 call    LCD_DELAY               ;Temporiza
+0033   3038           00103                                 movlw   b'00111000'
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0034   2???           00104                                 call    LCD_REG                 ;C�digo de instrucci�n
+0035   2???           00105                                 call    LCD_DELAY               ;Temporiza
+0036   3001           00106                                 movlw   b'00000001'     ;Borra LCD y Home.
+0037   2???           00107                 call    LCD_REG
+0038   0008           00108                 return
+                      00109 
+                      00110 ;*****************************************************************************
+                      00111 ;LCD_DELAY: Rutina de temporizaci�n de unos 5 mS a 4MHz. Se emplean las variables Lcd_Temp_1
+                      00112 ;y LCD_Temp_2 en lugar del TMR0. Este queda libre para las aplicaciones del usuario
+                      00113 
+0039   0064           00114 LCD_DELAY:              clrwdt
+003A   3007           00115                 movlw   .7
+003B   00A0           00116                 movwf   Lcd_Temp_1
+003C   01A1           00117                 clrf    Lcd_Temp_2
+003D   0BA1           00118 LCD_DELAY_1:    decfsz  Lcd_Temp_2,F
+003E   2???           00119                                 goto    LCD_DELAY_1
+003F   0BA0           00120                                 decfsz  Lcd_Temp_1,F
+0040   2???           00121                                 goto    LCD_DELAY_1
+0041   0008           00122                                 return
+                      00123             
+                      00045         #include "bcd16.inc"            
+                      00001 ;16Bits_BCD: Esta rutina convierte un número binario de 16 bits situado en Cont_H y
+                      00002 ;Cont_L y, lo convierte en 5 dígitos BCD que se depositan en las variables BCD_0, BCD_1
+                      00003 ;y BCD_2, siendo esta última la de menos peso.
+                      00004 ;Está presentada en la nota de aplicación AN544 de MICROCHIP y adaptada por MSE
+                      00005 
+0042                  00006 Bits16_BCD      
+0042   1003           00007     bcf     STATUS,C
+0043   01A7           00008     clrf    Contador    
+0044   1627           00009     bsf     Contador,4          ;Carga el contador con 16               
+0045   01A6           00010     clrf    BCD_0
+0046   01A5           00011     clrf    BCD_1
+0047   01A4           00012     clrf    BCD_2               ;Puesta a 0 inicial
+                      00013 
+0048                  00014 Loop_16         
+0048   0DA2           00015     rlf         Byte_L,F
+0049   0DA3           00016     rlf         Byte_H,F
+004A   0DA4           00017     rlf         BCD_2,F
+004B   0DA5           00018     rlf         BCD_1,F
+004C   0DA6           00019     rlf         BCD_0,F         ;Desplaza a izda. (multiplica por 2)
+004D   0BA7           00020     decfsz      Contador,F
+004E   2???           00021     goto        Ajuste
+004F   0008           00022     return
+                      00023 
+0050                  00024 Ajuste          
+0050   3024           00025     movlw       BCD_2
+0051   0084           00026     movwf       FSR                     ;Inicia el índice
+0052   2???           00027     call        Ajuste_BCD              ;Ajusta el primer byte
+0053   0A84           00028     incf        FSR,F
+0054   2???           00029     call        Ajuste_BCD              ;Ajusta el segundo byte
+0055   0A84           00030     incf        FSR,F
+0056   2???           00031     call        Ajuste_BCD
+0057   2???           00032     goto        Loop_16
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00033 
+0058                  00034 Ajuste_BCD      
+0058   0800           00035     movf        INDF,W          
+0059   3E03           00036     addlw       0x03
+005A   00A8           00037     movwf       Temporal        
+005B   19A8           00038     btfsc       Temporal,3              ;Mayor de 7 el nibble de menos peso ??
+005C   0080           00039     movwf       INDF                    ;Si, lo acumula
+005D   0800           00040     movf        INDF,W          
+005E   3E30           00041     addlw       0x30
+005F   00A8           00042     movwf       Temporal
+0060   1BA8           00043     btfsc       Temporal,7              ;Mayor de 7 el nibble de menos peso ??
+0061   0080           00044     movwf       INDF                    ;Si, lo acumula
+0062   0008           00045     return
+                      00046         #include "bcd32.inc"
+                      00001 ;******************************************************************
+                      00002 ; Convert 32-bit binary number at <bin> into a bcd number
+                      00003 ; at <bcd>. Uses Mike Keitz's procedure for handling bcd 
+                      00004 ; adjust; Modified Microchip AN526 for 32-bits.
+                      00005 ; rough guess is that about 2200 instructions will be executed
+                      00006 
+0063   3020           00007 b2bcd   movlw   .32             ; 32-bits
+0064   00C9           00008         movwf   ii              ; make cycle counter
+0065   01C4           00009         clrf    bcd             ; clear result area
+0066   01C5           00010         clrf    bcd+1
+0067   01C6           00011         clrf    bcd+2
+0068   01C7           00012         clrf    bcd+3
+0069   01C8           00013         clrf    bcd+4
+                      00014         
+006A   3044           00015 b2bcd2  movlw   bcd             ; make pointer
+006B   0084           00016         movwf   FSR
+006C   3005           00017         movlw   .5
+006D   00D0           00018         movwf   cnt
+                      00019 
+                      00020 ; Mike's routine:
+                      00021 
+006E   3033           00022 b2bcd3  movlw   0x33            
+006F   0780           00023         addwf   INDF,f          ; add to both nybbles
+0070   1980           00024         btfsc   INDF,3          ; test if low result > 7
+0071   39F0           00025         andlw   0xf0            ; low result >7 so take the 3 out
+0072   1B80           00026         btfsc   INDF,7          ; test if high result > 7
+0073   390F           00027         andlw   0x0f            ; high result > 7 so ok
+0074   0280           00028         subwf   INDF,f          ; any results <= 7, subtract back
+0075   0A84           00029         incf    FSR,f           ; point to next
+Message[305]: Using default destination of 1 (file).
+0076   0BD0           00030         decfsz  cnt
+0077   2???           00031         goto    b2bcd3
+                      00032         
+0078   0DB4           00033         rlf     bin+0,f         ; get another bit
+0079   0DB5           00034         rlf     bin+1,f
+007A   0DB6           00035         rlf     bin+2,f
+007B   0DB7           00036         rlf     bin+3,f
+007C   0DC4           00037         rlf     bcd+0,f         ; put it into bcd
+007D   0DC5           00038         rlf     bcd+1,f
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+007E   0DC6           00039         rlf     bcd+2,f
+007F   0DC7           00040         rlf     bcd+3,f
+0080   0DC8           00041         rlf     bcd+4,f
+0081   0BC9           00042         decfsz  ii,f            ; all done?
+0082   2???           00043         goto    b2bcd2          ; no, loop
+0083   0008           00044         return                  ; yes
+                      00047         #include "MULT_16x16_FASTEST.inc"
+                      00001 ; 16bit by 16bit unsigned multiply
+                      00002 ;  by Martin Sturm 2010
+                      00003 ; tested
+                      00004 ;
+                      00005 ; aH:aL * bH:bL --> r4:r3:r2:r1
+                      00006 ;
+                      00007 ; t1 is a temporary variable
+                      00008 ; if modifying a or b is ok, aL, bL, or bH can be used as t1
+                      00009 ;
+                      00010 ; 140 instructions, 140 cycles
+                      00011 ;
+                      00012 
+                      00013 ; helper macro
+                      00014 mmac MACRO A,bit, u2,u1
+                      00015     BTFSC       A,bit
+                      00016     ADDWF       u2,F
+                      00017     RRF u2,F
+                      00018     RRF u1,F
+                      00019     ENDM
+                      00020 
+                      00021 MULT_16x16_FASTEST MACRO aH,aL, bH,bL, r4,r3,r2,r1, t1
+                      00022 
+                      00023         ; 16x8 multiply  aH:aL * bL -> r3:r4:r1
+                      00024     CLRF        r3
+                      00025     CLRF        r1
+                      00026     CLRC
+                      00027     MOVFW       bL
+                      00028         mmac    aL,0, r3,r1
+                      00029         mmac    aL,1, r3,r1
+                      00030         mmac    aL,2, r3,r1
+                      00031         mmac    aL,3, r3,r1
+                      00032         mmac    aL,4, r3,r1
+                      00033         mmac    aL,5, r3,r1
+                      00034         mmac    aL,6, r3,r1
+                      00035         mmac    aL,7, r3,r1
+                      00036     CLRF        r4
+                      00037         ; carry already clear from last RRF of mmac above
+                      00038         ; bL still in W
+                      00039         mmac    aH,0, r3,r4
+                      00040         mmac    aH,1, r3,r4
+                      00041         mmac    aH,2, r3,r4
+                      00042         mmac    aH,3, r3,r4
+                      00043         mmac    aH,4, r3,r4
+                      00044         mmac    aH,5, r3,r4
+                      00045         mmac    aH,6, r3,r4
+                      00046         mmac    aH,7, r3,r4
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00047         
+                      00048         ; 16x8 multiply  aH:aL * bH -> r4:t1:r2
+                      00049         ;  middle byte from previous 16x8 multiplication starts in r4
+                      00050         ;  but ends in r2
+                      00051     CLRF        r2
+                      00052     MOVFW       bH
+                      00053         ; carry already clear from last RRF of mmac above
+                      00054         mmac    aL,0, r4,r2
+                      00055         mmac    aL,1, r4,r2
+                      00056         mmac    aL,2, r4,r2
+                      00057         mmac    aL,3, r4,r2
+                      00058         mmac    aL,4, r4,r2
+                      00059         mmac    aL,5, r4,r2
+                      00060         mmac    aL,6, r4,r2
+                      00061         mmac    aL,7, r4,r2
+                      00062         ; W still holds bH
+                      00063     CLRF        t1      ; bH,bL, or aL may be used for t1
+                      00064         ; carry already clear from last RRF of mmac above
+                      00065         mmac    aH,0, r4,t1
+                      00066         mmac    aH,1, r4,t1
+                      00067         mmac    aH,2, r4,t1
+                      00068         mmac    aH,3, r4,t1
+                      00069         mmac    aH,4, r4,t1
+                      00070         mmac    aH,5, r4,t1
+                      00071         mmac    aH,6, r4,t1
+                      00072         mmac    aH,7, r4,t1
+                      00073         
+                      00074         ; add middle byte aH:aL * bH to upper byte of aH:aL * bL
+                      00075     MOVFW       t1
+                      00076     ADDWF       r3,F
+                      00077     SKPNC
+                      00078     INCF        r4,F
+                      00079 
+                      00080         ENDM
+                      00048         
+                      00049 loadd   macro BH, BL
+                      00050         local   p
+                      00051 p = res / .256
+                      00052         movlw   p
+                      00053         movwf   BH
+                      00054         movlw   res - p * .256
+                      00055         movwf   BL
+                      00056         endm
+                      00057 
+                      00058 MAIN_PROG CODE                      ; let linker place main program
+                      00059 
+                      00060  ; Muestra por el LCD los diez dígitos situados en las variables bcd4-0
+                      00061  ; Los dígitos BCD serán: AB CD EF GH IJ (MSB=A, LSB=J)
+0000                  00062 VISUALIZAR32
+0000   1283           00063         bcf     STATUS, RP0         ; Banco 0
+0001   3080           00064         movlw   0x80
+0002   2???           00065         call    LCD_REG
+0003   3005           00066         movlw   .5                  ; Vamos a procesar 5 bytes
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0004   00A7           00067         movwf   Contador            ; con este contador
+0005   3048           00068         movlw   bcd+4               ; Primero sacamos el dígito más alto (A)
+0006   0084           00069         movwf   FSR                 ; Direccionamiento indirecto: &bcd+4
+0007                  00070 VISU_LOOP32
+0007   0E00           00071         swapf   INDF, W             ; Intercambiamos digitos BCD: AB->BA
+0008   390F           00072         andlw   0x0f                ; Nos quedamos con el de la drcha (A)
+0009   3830           00073         iorlw   0x30                ; Lo convertimos a ASCII: 0x30, ..., 0x39
+000A   2???           00074         call    LCD_DATO            ; Y lo sacamos por la pantalla
+000B   0800           00075         movf    INDF, W             ; Procedemos igual con el otro dígito (B)
+000C   390F           00076         andlw   0x0f
+000D   3830           00077         iorlw   0x30
+000E   2???           00078         call    LCD_DATO
+000F   0384           00079         decf    FSR, F              ; Seguimos con el siguiente byte
+0010   0BA7           00080         decfsz  Contador, F         ; Si aún no hemos mostrado los 5 bytes
+0011   2???           00081         goto    VISU_LOOP32         ; Continuamos con el siguiente byte
+0012   0008           00082         return                      ; else devolvemos el control
+                      00083         
+                      00084 ; Muestra por el LCD los cinco dígitos situados en las variables BCD2-0
+0013                  00085 VISUALIZAR
+0013   1283           00086         bcf     STATUS, RP0
+0014   3080           00087         movlw   0x80
+0015   2???           00088         call    LCD_REG
+0016   3003           00089         movlw   .3
+0017   00A7           00090         movwf   Contador
+0018   3026           00091         movlw   BCD_0
+0019   0084           00092         movwf   FSR
+001A                  00093 VISU_LOOP
+001A   0E00           00094         swapf   INDF, W
+001B   390F           00095         andlw   0x0f
+001C   3830           00096         iorlw   0x30
+001D   2???           00097         call    LCD_DATO
+001E   0800           00098         movf    INDF, W
+001F   390F           00099         andlw   0x0f
+0020   3830           00100         iorlw   0x30
+0021   2???           00101         call    LCD_DATO
+0022   0384           00102         decf    FSR, F
+0023   0BA7           00103         decfsz  Contador, F
+0024   2???           00104         goto    VISU_LOOP
+0025   0008           00105         return
+                      00106 
+                      00107 ; INITAD, inicializa y configura el hardware A/D
+                      00108 ; Selecciona ch0, 8*Tosc, A/D int y enciende el A/D
+0026                  00109 INITAD
+0026   1683           00110         bsf     STATUS, RP0             ; Select bank 1
+0027   1303           00111         bcf     STATUS, RP1
+0028   308E           00112         movlw   b'10001110'             ; Right justify, select AN0 
+0029   009F           00113         movwf   ADCON1                  ; as analog input
+002A   170C           00114         bsf     PIE1, ADIE              ; enable a/d int.
+002B   1283           00115         bcf     STATUS, RP0             ; Select bank 0 
+002C   3041           00116         movlw   b'01000001'             ; 8*Tosc, Ch 0 (RA0/AN0), go=0, AD on
+002D   009F           00117         movwf   ADCON0
+002E   0008           00118         return                          ;
+                      00119 
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+002F                  00120 WAIT20us        
+002F   1283           00121         bcf     STATUS, RP0
+0030   30EB           00122         movlw   ~.20                    ; Wait 20us for sample on ch0
+0031   0081           00123         movwf   TMR0
+0032   110B           00124         bcf     INTCON, T0IF            ; Borramos flag T0IF
+0033   168B           00125         bsf     INTCON, T0IE            ; Habilitamos int TMR0
+0034   178B           00126         bsf     INTCON, GIE             ; Activo interrupciones
+0035   0008           00127         return
+                      00128 
+                      00129 ; Carga el valor de 10 bits resultado de la conversión A/D situado en los
+                      00130 ; registros ADRESH y ADRESL (justificado a la derecha) en el registro CCP2L
+                      00131 ; (los bits) más significativos y en los bits 5:6 del CCP2CON los menos signi-
+                      00132 ; ficativos. Por ejemplo, si ADRESH-ADRESL = 0000 00ji hgfe dcba entonces
+                      00133 ; CCP2L<7:0> = jihg fedc
+                      00134 ; CCP2CON<6:5> = ba
+0036                  00135 ADCTOCCP2
+0036   1003           00136         bcf     STATUS, C               ; Borramos acarreo
+0037   1283           00137         bcf     STATUS, RP0             ; Banco 0
+0038   1687           00138         bsf     PORTC, 5
+0039   3003           00139         movlw   b'00000011'             ; Borramos los 6 bits más significativos
+003A   05A3           00140         andwf   Byte_H, F               ; de Byte_H: 0000 00ji
+003B   0CA3           00141         rrf     Byte_H, F               ; Movemos los bits más significativos
+003C   0CA2           00142         rrf     Byte_L, F               ; del resultado de la conversión A/D
+003D   0CA3           00143         rrf     Byte_H, F               ; al registro ADRESL: jihg fedc.
+003E   0CA2           00144         rrf     Byte_L, F               ; ADRESL: jihg fedc
+003F   0822           00145         movfw   Byte_L                  ; Cargamos ADRESL en CCPR2L     
+0040   009B           00146         movwf   CCPR2L                  ; (bits más significativos de la conv)
+0041   1607           00147         bsf     PORTC, 4
+0042   0CA3           00148         rrf     Byte_H, F               ; ADRESH: ba0 0000
+0043   0CA3           00149         rrf     Byte_H, F               ; ADRESH: 0ba0 0000
+0044   0CA3           00150         rrf     Byte_H, F               ; ADRESH: 00ba 0000
+0045   0823           00151         movfw   Byte_H
+0046   049D           00152         iorwf   CCP2CON, F              ; CCP2CON: xxab xxxx
+0047   1587           00153         bsf     PORTC, 3
+0048   0008           00154         return
+                      00155 
+0049                  00156 TMR0INT
+0049   1683           00157         bsf     STATUS, RP0             ; Bank 1
+004A   170C           00158         bsf     PIE1, ADIE              ; Elable A/D interrupts
+004B   1283           00159         bcf     STATUS, RP0             ; Bank 0
+004C   3060           00160         movlw   b'1100000'              ; GIE, PIE, resto off
+004D   008B           00161         movwf   INTCON
+004E   130C           00162         bcf     PIR1, ADIF              ; Borramos flag ADIF
+                      00163         
+004F   151F           00164         bsf     ADCON0, GO              ; Start AD conversion
+                      00165                                         ; The ADIF bit will be set and the GO/DONE
+                      00166                                         ; bit is cleared upon completion of the
+                      00167                                         ; A/D Conversion.
+0050   0008           00168         return  
+                      00169 
+0051                  00170 LEEADC  
+0051   130C           00171         bcf     PIR1, ADIF              ; Borramos flag ADIF
+0052   191F           00172         btfsc   ADCON0, GO              ; Si GO=0 salta, else
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0053   2???           00173         goto    WAIT20us                ; seguimos esperando
+0054   1683           00174         bsf     STATUS, RP0             ; Banco 1
+0055   1303           00175         bcf     STATUS, RP1                     
+0056   081E           00176         movf    ADRESL, W               ; Leemos bits menos peso del A/D
+0057   1283           00177         bcf     STATUS, RP0             ; Banco 0
+0058   00A2           00178         movwf   Byte_L                  ; Repetimos para convertir a BCD
+0059   3002           00179         movlw   .2
+005A   00B2           00180         movwf   F2L
+005B   081E           00181         movf    ADRESH, W               ; Leemos bits más peso del A/D
+005C   00A3           00182         movwf   Byte_H                  ; Los cargamos para convertir a BCD
+005D   00B3           00183         movwf   F2H
+                      00184         loadd   F1H, F1L
+  0000                    M         local   p
+  000000BE                M p = res / .256
+005E   30BE               M         movlw   p
+005F   00B1               M         movwf   F1H
+0060   30BC               M         movlw   res - p * .256
+0061   00B0               M         movwf   F1L
+                      00185         MULT_16x16_FASTEST F2H,F2L, F1H,F1L, p4,p3,p2,p1,t1
+                          M 
+                          M         ; 16x8 multiply  aH:aL * bL -> r3:r4:r1
+0062   01B6               M     CLRF        p3
+0063   01B4               M     CLRF        p1
+0064   1003               M     CLRC
+0065   0830               M     MOVFW       F1L
+                          M         mmac    F2L,0, p3,p1
+0066   1832               M     BTFSC       F2L,0
+0067   07B6               M     ADDWF       p3,F
+0068   0CB6               M     RRF p3,F
+0069   0CB4               M     RRF p1,F
+                          M         mmac    F2L,1, p3,p1
+006A   18B2               M     BTFSC       F2L,1
+006B   07B6               M     ADDWF       p3,F
+006C   0CB6               M     RRF p3,F
+006D   0CB4               M     RRF p1,F
+                          M         mmac    F2L,2, p3,p1
+006E   1932               M     BTFSC       F2L,2
+006F   07B6               M     ADDWF       p3,F
+0070   0CB6               M     RRF p3,F
+0071   0CB4               M     RRF p1,F
+                          M         mmac    F2L,3, p3,p1
+0072   19B2               M     BTFSC       F2L,3
+0073   07B6               M     ADDWF       p3,F
+0074   0CB6               M     RRF p3,F
+0075   0CB4               M     RRF p1,F
+                          M         mmac    F2L,4, p3,p1
+0076   1A32               M     BTFSC       F2L,4
+0077   07B6               M     ADDWF       p3,F
+0078   0CB6               M     RRF p3,F
+0079   0CB4               M     RRF p1,F
+                          M         mmac    F2L,5, p3,p1
+007A   1AB2               M     BTFSC       F2L,5
+007B   07B6               M     ADDWF       p3,F
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+007C   0CB6               M     RRF p3,F
+007D   0CB4               M     RRF p1,F
+                          M         mmac    F2L,6, p3,p1
+007E   1B32               M     BTFSC       F2L,6
+007F   07B6               M     ADDWF       p3,F
+0080   0CB6               M     RRF p3,F
+0081   0CB4               M     RRF p1,F
+                          M         mmac    F2L,7, p3,p1
+0082   1BB2               M     BTFSC       F2L,7
+0083   07B6               M     ADDWF       p3,F
+0084   0CB6               M     RRF p3,F
+0085   0CB4               M     RRF p1,F
+0086   01B7               M     CLRF        p4
+                          M         ; carry already clear from last RRF of mmac above
+                          M         ; bL still in W
+                          M         mmac    F2H,0, p3,p4
+0087   1833               M     BTFSC       F2H,0
+0088   07B6               M     ADDWF       p3,F
+0089   0CB6               M     RRF p3,F
+008A   0CB7               M     RRF p4,F
+                          M         mmac    F2H,1, p3,p4
+008B   18B3               M     BTFSC       F2H,1
+008C   07B6               M     ADDWF       p3,F
+008D   0CB6               M     RRF p3,F
+008E   0CB7               M     RRF p4,F
+                          M         mmac    F2H,2, p3,p4
+008F   1933               M     BTFSC       F2H,2
+0090   07B6               M     ADDWF       p3,F
+0091   0CB6               M     RRF p3,F
+0092   0CB7               M     RRF p4,F
+                          M         mmac    F2H,3, p3,p4
+0093   19B3               M     BTFSC       F2H,3
+0094   07B6               M     ADDWF       p3,F
+0095   0CB6               M     RRF p3,F
+0096   0CB7               M     RRF p4,F
+                          M         mmac    F2H,4, p3,p4
+0097   1A33               M     BTFSC       F2H,4
+0098   07B6               M     ADDWF       p3,F
+0099   0CB6               M     RRF p3,F
+009A   0CB7               M     RRF p4,F
+                          M         mmac    F2H,5, p3,p4
+009B   1AB3               M     BTFSC       F2H,5
+009C   07B6               M     ADDWF       p3,F
+009D   0CB6               M     RRF p3,F
+009E   0CB7               M     RRF p4,F
+                          M         mmac    F2H,6, p3,p4
+009F   1B33               M     BTFSC       F2H,6
+00A0   07B6               M     ADDWF       p3,F
+00A1   0CB6               M     RRF p3,F
+00A2   0CB7               M     RRF p4,F
+                          M         mmac    F2H,7, p3,p4
+00A3   1BB3               M     BTFSC       F2H,7
+00A4   07B6               M     ADDWF       p3,F
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00A5   0CB6               M     RRF p3,F
+00A6   0CB7               M     RRF p4,F
+                          M         
+                          M         ; 16x8 multiply  aH:aL * bH -> r4:t1:r2
+                          M         ;  middle byte from previous 16x8 multiplication starts in r4
+                          M         ;  but ends in r2
+00A7   01B5               M     CLRF        p2
+00A8   0831               M     MOVFW       F1H
+                          M         ; carry already clear from last RRF of mmac above
+                          M         mmac    F2L,0, p4,p2
+00A9   1832               M     BTFSC       F2L,0
+00AA   07B7               M     ADDWF       p4,F
+00AB   0CB7               M     RRF p4,F
+00AC   0CB5               M     RRF p2,F
+                          M         mmac    F2L,1, p4,p2
+00AD   18B2               M     BTFSC       F2L,1
+00AE   07B7               M     ADDWF       p4,F
+00AF   0CB7               M     RRF p4,F
+00B0   0CB5               M     RRF p2,F
+                          M         mmac    F2L,2, p4,p2
+00B1   1932               M     BTFSC       F2L,2
+00B2   07B7               M     ADDWF       p4,F
+00B3   0CB7               M     RRF p4,F
+00B4   0CB5               M     RRF p2,F
+                          M         mmac    F2L,3, p4,p2
+00B5   19B2               M     BTFSC       F2L,3
+00B6   07B7               M     ADDWF       p4,F
+00B7   0CB7               M     RRF p4,F
+00B8   0CB5               M     RRF p2,F
+                          M         mmac    F2L,4, p4,p2
+00B9   1A32               M     BTFSC       F2L,4
+00BA   07B7               M     ADDWF       p4,F
+00BB   0CB7               M     RRF p4,F
+00BC   0CB5               M     RRF p2,F
+                          M         mmac    F2L,5, p4,p2
+00BD   1AB2               M     BTFSC       F2L,5
+00BE   07B7               M     ADDWF       p4,F
+00BF   0CB7               M     RRF p4,F
+00C0   0CB5               M     RRF p2,F
+                          M         mmac    F2L,6, p4,p2
+00C1   1B32               M     BTFSC       F2L,6
+00C2   07B7               M     ADDWF       p4,F
+00C3   0CB7               M     RRF p4,F
+00C4   0CB5               M     RRF p2,F
+                          M         mmac    F2L,7, p4,p2
+00C5   1BB2               M     BTFSC       F2L,7
+00C6   07B7               M     ADDWF       p4,F
+00C7   0CB7               M     RRF p4,F
+00C8   0CB5               M     RRF p2,F
+                          M         ; W still holds bH
+00C9   01B9               M     CLRF        t1      ; bH,bL, or aL may be used for t1
+                          M         ; carry already clear from last RRF of mmac above
+                          M         mmac    F2H,0, p4,t1
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00CA   1833               M     BTFSC       F2H,0
+00CB   07B7               M     ADDWF       p4,F
+00CC   0CB7               M     RRF p4,F
+00CD   0CB9               M     RRF t1,F
+                          M         mmac    F2H,1, p4,t1
+00CE   18B3               M     BTFSC       F2H,1
+00CF   07B7               M     ADDWF       p4,F
+00D0   0CB7               M     RRF p4,F
+00D1   0CB9               M     RRF t1,F
+                          M         mmac    F2H,2, p4,t1
+00D2   1933               M     BTFSC       F2H,2
+00D3   07B7               M     ADDWF       p4,F
+00D4   0CB7               M     RRF p4,F
+00D5   0CB9               M     RRF t1,F
+                          M         mmac    F2H,3, p4,t1
+00D6   19B3               M     BTFSC       F2H,3
+00D7   07B7               M     ADDWF       p4,F
+00D8   0CB7               M     RRF p4,F
+00D9   0CB9               M     RRF t1,F
+                          M         mmac    F2H,4, p4,t1
+00DA   1A33               M     BTFSC       F2H,4
+00DB   07B7               M     ADDWF       p4,F
+00DC   0CB7               M     RRF p4,F
+00DD   0CB9               M     RRF t1,F
+                          M         mmac    F2H,5, p4,t1
+00DE   1AB3               M     BTFSC       F2H,5
+00DF   07B7               M     ADDWF       p4,F
+00E0   0CB7               M     RRF p4,F
+00E1   0CB9               M     RRF t1,F
+                          M         mmac    F2H,6, p4,t1
+00E2   1B33               M     BTFSC       F2H,6
+00E3   07B7               M     ADDWF       p4,F
+00E4   0CB7               M     RRF p4,F
+00E5   0CB9               M     RRF t1,F
+                          M         mmac    F2H,7, p4,t1
+00E6   1BB3               M     BTFSC       F2H,7
+00E7   07B7               M     ADDWF       p4,F
+00E8   0CB7               M     RRF p4,F
+00E9   0CB9               M     RRF t1,F
+                          M         
+                          M         ; add middle byte aH:aL * bH to upper byte of aH:aL * bL
+00EA   0839               M     MOVFW       t1
+00EB   07B6               M     ADDWF       p3,F
+00EC   1803               M     SKPNC
+00ED   0AB7               M     INCF        p4,F
+                          M 
+00EE   2???           00186         call    b2bcd                   ; Codificamos la multiplicación a BCD
+00EF   2???           00187         call    VISUALIZAR32            ; Mostramos el resultado en el LCD
+                      00188         ;call   Bits16_BCD              ; Codificamos valor convertido a BCD
+                      00189         ;call   VISUALIZAR
+00F0   1683           00190         bsf     STATUS, RP0             ; Banco 1
+00F1   1303           00191         bcf     STATUS, RP1                     
+00F2   081E           00192         movf    ADRESL, W               ; Leemos bits menos peso del A/D
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00F3   1283           00193         bcf     STATUS, RP0             ; Banco 0
+00F4   00A2           00194         movwf   Byte_L                  ; Repetimos para actualizar PWM
+00F5   081E           00195         movf    ADRESH, W               ; Leemos bits más peso del A/D
+00F6   00A3           00196         movwf   Byte_H                  ; Los cargamos para actualizar PWM
+00F7   1787           00197         bsf     PORTC, 7                ; Iluminamos led 7
+00F8   2???           00198         call    ADCTOCCP2
+00F9   1707           00199         bsf     PORTC, 6                ; Iluminamos led 6
+00FA   0008           00200         return
+                      00201         
+00FB                  00202 INTER
+00FB   1283           00203         bcf     STATUS, RP0             ; Banco 0
+00FC   1303           00204         bcf     STATUS, RP1             ;
+00FD   190B           00205         btfsc   INTCON,T0IF             ; Si T0IF = 0 salta, else
+00FE   2???           00206         call    TMR0INT                 ; tratar int TMR0
+00FF   1B0C           00207         btfsc   PIR1, ADIF              ; Si ADIF = 0 salta, else
+0100   2???           00208         call    LEEADC                  ; tratar int ADIF
+0101   1D1F           00209         btfss   ADCON0, GO              ; Si GO = 1, salta, else
+0102   2???           00210         call    WAIT20us                ; Esperar e iniciar otra adquisición
+0103   0009           00211         retfie
+                      00212 
+0104                  00213 START
+0104   0185           00214         clrf    PORTA                   ; Borramos salidas
+0105   0186           00215         clrf    PORTB                   ; Borramos salidas
+0106   0187           00216         clrf    PORTC                   ; Borramos salidas
+0107   019D           00217         clrf    CCP2CON                 ; Apagamos módulo CCP2
+0108   019B           00218         clrf    CCPR2L                  ; Duty cycle 0%
+0109   0191           00219         clrf    TMR2                    ; Apagamos TMR2
+010A   1683           00220         bsf     STATUS, RP0             ; Banco 1
+010B   1303           00221         bcf     STATUS, RP1             ;
+010C   308E           00222         movlw   b'10001110'             ; AN0 E/S analogica
+010D   009F           00223         movwf   ADCON1                  ; AN1:5 E/S digitales
+010E   1281           00224         bcf     OPTION_REG, T0CS        ; TMR0 temporizador     
+010F   3001           00225         movlw   b'00000001'             ; Set AN0 as input
+0110   0085           00226         movwf   TRISA                   ; AN1-5 as outputs
+0111   0186           00227         clrf    TRISB                   ; PortB digital 
+0112   0187           00228         clrf    TRISC                   ; PortC salidas (RC1 -> PWM)
+0113   087E           00229         movfw   PERIODO-1               ; Carga el registro
+0114   0092           00230         movwf   PR2                     ; de periodo
+0115   2???           00231         call    INITAD
+0116   1283           00232         bcf     STATUS, RP0             ; Banco 0
+0117   300C           00233         movlw   b'00001100'             ; Configuración de CCP2
+0118   009D           00234         movwf   CCP2CON                 ; en modo PWM
+0119   3006           00235         movlw   b'0000110'              ; Empezamos a contar con TMR2 con
+011A   1512           00236         BSF     T2CON, TMR2ON           ; predivisor 1:16 y postdivisor 1:1
+011B   2???           00237         call    UP_LCD
+011C   2???           00238         call    LCD_INI
+011D   300C           00239         movlw   b'00001100'
+011E   2???           00240         call    LCD_REG
+011F   2???           00241         call    WAIT20us                ; Esperamos para adquirir la lectura
+                      00242 
+0120                  00243 INFLOOP
+0120   0064           00244         clrwdt                          ; Refresca el perro guardián
+0121   0000           00245         nop
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0122   0000           00246         nop
+0123   0000           00247         nop
+0124   2???           00248         goto    INFLOOP
+                      00249 
+Message[303]: Program word too large.  Truncated to core size. (FF79)
+3F79                  00250         END
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADCTOCCP2                         00000036
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+Ajuste                            00000050
+Ajuste_BCD                        00000058
+BCD_0                             00000026
+BCD_1                             00000025
+BCD_2                             00000024
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+Bits16_BCD                        00000042
+Byte_H                            00000023
+Byte_L                            00000022
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+CKP                               00000004
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+Contador                          00000027
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DELAY                             00000029
+DISABLE                           bcf PORTA,3
+D_A                               00000005
+D_NOT_A                           00000005
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+ENABLE                            bsf PORTA,3
+ESCRIBIR                          bcf PORTA,2
+F                                 00000001
+F1H                               00000031
+F1L                               00000030
+F2H                               00000033
+F2L                               00000032
+FERR                              00000002
+FSR                               00000004
+Flag                              00000038
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 18
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+INDF                              00000000
+INFLOOP                           00000120
+INITAD                            00000026
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTER                             000000FB
+INTF                              00000001
+IRP                               00000007
+LCD_BUSY                          0000000D
+LCD_BUSY_1                        00000014
+LCD_DATO                          00000024
+LCD_DELAY                         00000039
+LCD_DELAY_1                       0000003D
+LCD_E                             0000001C
+LCD_E_1                           00000021
+LCD_INI                           0000002D
+LCD_REG                           00000029
+LEEADC                            00000051
+LEER                              bsf PORTA,2
+Lcd_Temp_1                        00000020
+Lcd_Temp_2                        00000021
+Lcd_var                           00000020
+Loop_16                           00000048
+MULT_16x16_FASTEST                
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OERR                              00000001
+OFF_COMANDO                       bcf PORTA,1
+ON_COMANDO                        bsf PORTA,1
+OPTION_REG                        00000081
+P                                 00000004
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 19
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PERIODO                           000000FF
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 20
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+START                             00000104
+STATUS                            00000003
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR0INT                           00000049
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 21
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+Temporal                          00000028
+UA                                00000001
+UP_LCD                            00000005
+VISUALIZAR                        00000013
+VISUALIZAR32                      00000000
+VISU_LOOP                         0000001A
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 22
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+VISU_LOOP32                       00000007
+W                                 00000000
+WAIT20us                          0000002F
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F876A                         00000001
+__DEBUG                           
+__MPLAB_DEBUGGER_SIMULATOR        1
+b2bcd                             00000063
+b2bcd2                            0000006A
+b2bcd3                            0000006E
+bcd                               00000044
+bin                               00000034
+MPASM 5.70                          ADC1.ASM   11-26-2016  20:48:39         PAGE 23
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+cnt                               00000050
+ii                                00000049
+loadd                             
+mmac                              
+p1                                00000034
+p2                                00000035
+p3                                00000036
+p4                                00000037
+res                               .48828
+t1                                00000039
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     3 reported,    12 suppressed
+
+

@@ -1,0 +1,96 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Sat Nov 26 21:21:43 2016
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                 RES_VECT       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_0       code   0x000004    program   0x000002
+                   .org_1       code   0x000005    program   0x0000fe
+                MAIN_PROG       code   0x000084    program   0x00027c
+.config_2007_BUILD/DEFAULT/PRODUCTION/ADC1.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x0001c1      
+                            0x002007    0x002007      
+            450 out of 8454 program addresses used, program memory utilization is 5%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                ADCTOCCP2   0x0000d4    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                   Ajuste   0x000050    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd16.inc
+               Ajuste_BCD   0x000058    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd16.inc
+               Bits16_BCD   0x000042    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd16.inc
+                  INFLOOP   0x0001bd    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                   INITAD   0x0000c4    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                    INTER   0x000198    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                 LCD_BUSY   0x00000d    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+               LCD_BUSY_1   0x000014    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                 LCD_DATO   0x000024    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                LCD_DELAY   0x000039    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+              LCD_DELAY_1   0x00003d    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                    LCD_E   0x00001c    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                  LCD_E_1   0x000021    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                  LCD_INI   0x00002d    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                  LCD_REG   0x000029    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                   LEEADC   0x0000ef    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                  Loop_16   0x000048    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd16.inc
+                 MOSTRARV   0x000084    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                    START   0x0001a1    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                  TMR0INT   0x0000e7    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                   UP_LCD   0x000005    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+               VISUALIZAR   0x0000b1    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+             VISUALIZAR32   0x00009e    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                VISU_LOOP   0x0000b8    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+              VISU_LOOP32   0x0000a5    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                 WAIT20us   0x0000cd    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                    b2bcd   0x000063    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd32.inc
+                   b2bcd2   0x00006a    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd32.inc
+                   b2bcd3   0x00006e    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd32.inc
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   UP_LCD   0x000005    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                 LCD_BUSY   0x00000d    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+               LCD_BUSY_1   0x000014    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                    LCD_E   0x00001c    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                  LCD_E_1   0x000021    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                 LCD_DATO   0x000024    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                  LCD_REG   0x000029    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                  LCD_INI   0x00002d    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+                LCD_DELAY   0x000039    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+              LCD_DELAY_1   0x00003d    program     static C:\Users\Guest\MPLABXProjects\adc1.X\lcd_cxx.inc
+               Bits16_BCD   0x000042    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd16.inc
+                  Loop_16   0x000048    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd16.inc
+                   Ajuste   0x000050    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd16.inc
+               Ajuste_BCD   0x000058    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd16.inc
+                    b2bcd   0x000063    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd32.inc
+                   b2bcd2   0x00006a    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd32.inc
+                   b2bcd3   0x00006e    program     static C:\Users\Guest\MPLABXProjects\adc1.X\bcd32.inc
+                 MOSTRARV   0x000084    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+             VISUALIZAR32   0x00009e    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+              VISU_LOOP32   0x0000a5    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+               VISUALIZAR   0x0000b1    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                VISU_LOOP   0x0000b8    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                   INITAD   0x0000c4    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                 WAIT20us   0x0000cd    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                ADCTOCCP2   0x0000d4    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                  TMR0INT   0x0000e7    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                   LEEADC   0x0000ef    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                    INTER   0x000198    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                    START   0x0001a1    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+                  INFLOOP   0x0001bd    program     static C:\Users\Guest\MPLABXProjects\adc1.X\adc1.asm
+
+

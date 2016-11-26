@@ -1,0 +1,3 @@
+Message[303] C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\ADC1.ASM 5 : Program word too large.  Truncated to core size. (FF79)
+Message[305] C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\BCD32.INC 30 : Using default destination of 1 (file).
+Message[303] C:\USERS\GUEST\MPLABXPROJECTS\ADC1.X\ADC1.ASM 250 : Program word too large.  Truncated to core size. (FF79)

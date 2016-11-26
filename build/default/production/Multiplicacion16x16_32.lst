@@ -1,0 +1,297 @@
+MPASM 5.70        MULTIPLICACION16X16_32.ASM   11-26-2016  15:55:08         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;************************************************************
+                      00002 ;*** Rutina de multiplicacion de 16bits x 16bits = 32bits ***
+                      00003 ;************************************************************
+                      00004 
+                      00005 ;<Factor1b;Factor1a>x<Factor2b;Factor2a>=<Resultado_d;Resultado_c;Resultado_b;Resultado_a>
+                      00006 ;REGISTROS:
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00007 Factor1a        
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00008 Factor1b
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00009 Factor2a
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00010 Factor2b
+                      00011 ;Registros para guardar resultado de multiplicacion de 32 bit's
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00012 Resultado_a
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00013 Resultado_b
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00014 Resultado_c
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00015 Resultado_d
+                      00016 ;registro temporario de multiplicacion
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00017 Flag 
+                      00018 
+                      00019 ;RUTINA:
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00020 Multiplicacion
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00021         clrf    Resultado_a
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00022         clrf    Resultado_b
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00023         clrf    Resultado_c
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00024         clrf    Resultado_d
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00025         bsf     Resultado_a,7
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00026         clrf    Flag
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00027         btfss   Factor1b,7
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+MPASM 5.70        MULTIPLICACION16X16_32.ASM   11-26-2016  15:55:08         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0000                  00028         goto    mult_1
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00029         comf    Factor1b,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00030         comf    Factor1a,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00031         incf    Factor1a,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00032         btfsc   STATUS,Z
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00033         incf    Factor1b,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00034         incf    Flag,f
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00035 mult_1
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00036         btfss   Factor2b,7
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00037         goto    mult_2
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00038         comf    Factor2b,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00039         comf    Factor2a,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00040         incf    Factor2a,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00041         btfsc   STATUS,Z
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00042         incf    Factor2b,f
+Message[305]: Using default destination of 1 (file).
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00043         incf    Flag
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00044 mult_2  
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00045         rrf     Factor1b,f
+MPASM 5.70        MULTIPLICACION16X16_32.ASM   11-26-2016  15:55:08         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00046         rrf     Factor1a,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (C)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00047         btfss   STATUS,C
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00048         goto    mult_3
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00049         movf    Factor2a,w
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00050         addwf   Resultado_b,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00051         movf    Factor2b,w
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (C)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00052         btfsc   STATUS,C
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00053         incfsz  Factor2b,w
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00054         addwf   Resultado_c,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (C)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00055         btfsc   STATUS,C
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00056         incf    Resultado_d,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (C)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00057         bcf     STATUS,C
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00058 mult_3
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00059         btfss   Factor1a,7
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00060         goto    mult_4
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00061         movf    Factor2a,w
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+MPASM 5.70        MULTIPLICACION16X16_32.ASM   11-26-2016  15:55:08         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0000                  00062         addwf   Resultado_c,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (C)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00063         btfsc   STATUS,C
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00064         incf    Resultado_d,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00065         movf    Factor2b,w
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00066         addwf   Resultado_d,f
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00067 mult_4  
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00068         rrf     Resultado_d,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00069         rrf     Resultado_c,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00070         rrf     Resultado_b,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00071         rrf     Resultado_a,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (C)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00072         btfss   STATUS,C
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00073         goto    mult_2
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00074         btfss   Flag,0
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00075         goto    Salir
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00076         comf    Resultado_d,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00077         comf    Resultado_c,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00078         comf    Resultado_b,f
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00079         comf    Resultado_a,f
+MPASM 5.70        MULTIPLICACION16X16_32.ASM   11-26-2016  15:55:08         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00080         incf    Resultado_a,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00081         btfsc   STATUS,Z
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00082         incf    Resultado_b,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00083         btfsc   STATUS,Z
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00084         incf    Resultado_c,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00085         btfsc   STATUS,Z
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00086         incf    Resultado_d,f
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00087 Salir
+Error[129]  : Expected (END)
+MPASM 5.70        MULTIPLICACION16X16_32.ASM   11-26-2016  15:55:08         PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+Factor1a                          00000000
+Factor1b                          00000000
+Factor2a                          00000000
+Factor2b                          00000000
+Flag                              00000000
+Multiplicacion                    00000000
+Resultado_a                       00000000
+Resultado_b                       00000000
+Resultado_c                       00000000
+Resultado_d                       00000000
+Salir                             00000000
+__16F876A                         00000001
+mult_1                            00000000
+mult_2                            00000000
+mult_3                            00000000
+mult_4                            00000000
+
+Errors   :   151
+Warnings :     0 reported,     0 suppressed
+Messages :     1 reported,     0 suppressed
+
+
